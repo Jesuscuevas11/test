@@ -1,0 +1,249 @@
+<section class="call-to-action">
+  <div class="container">
+    <!-- Section Title -->
+    <h1>{{ section.settings.section_title }}</h1>
+
+    <!-- Dynamic Collection Title -->
+    <h2>{{ collection.title | capitalize }} is now available!</h2>
+
+    <!-- Additional Information -->
+    <p>{{ section.settings.additional_info }}</p>
+
+    <!-- Products List -->
+    <div id="product-list"></div> <!-- Aquí se mostrarán los productos -->
+  </div>
+</section>
+
+
+
+<script>
+// Función para actualizar el contenido del cart drawer
+// Función para actualizar el contenido del cart drawer
+function updateCartDrawer() {
+    console.log('Ejecutando updateCartDrawer...');
+
+    const cartDrawer = document.querySelector('cart-drawer');
+    if (cartDrawer) {
+        console.log('Cart drawer encontrado en el DOM.');
+
+        // Si el cart drawer tiene un método open(), lo usamos
+        if (typeof cartDrawer.open === 'function') {
+            console.log('Abriendo cart drawer...');
+            cartDrawer.open();
+        } else {
+            console.warn('Cart drawer no tiene un método open().');
+        }
+
+        // Obtener los productos del carrito y renderizarlos
+        fetch('/cart.js')
+            .then(response => {
+                console.log('Respuesta del API /cart.js:', response);
+                if (!response.ok) {
+                    throw new Error(`Error al obtener el carrito: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(cart => {
+                console.log('Contenido del carrito obtenido:', cart);
+
+                const cartItemsContainer = cartDrawer.querySelector('drawer__cart-items-wrapper');
+                if (cartItemsContainer) {
+                    console.log('Contenedor de productos del carrito encontrado. Actualizando...');
+
+                    // Limpiar el contenedor de productos, pero no eliminar el carrito entero
+                    cartItemsContainer.innerHTML = ''; 
+
+                    // Iterar sobre todos los productos y renderizarlos
+                    cart.items.forEach(item => {
+                        const cartItem = document.createElement('div');
+                        cartItem.classList.add('cart-item');
+                        cartItem.innerHTML = `
+                            <img src="${item.image}" alt="${item.title}" class="cart-item-image" />
+                            <h4>${item.title}</h4>
+                            <p>Quantity: ${item.quantity}</p>
+                            <p>Price: $${(item.price / 100).toFixed(2)} USD</p>
+                        `;
+                        cartItemsContainer.appendChild(cartItem);
+                    });
+
+                    console.log('Productos del carrito renderizados correctamente.');
+                } else {
+                    console.warn('No se encontró el contenedor .cart-items en el cart drawer.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener los productos del carrito:', error.message);
+            });
+    } else {
+        console.warn('Cart drawer no encontrado en el DOM.');
+    }
+}
+
+// Función para agregar un producto al carrito
+function addToCart(variantId, quantity) {
+    console.log(`Ejecutando addToCart con variantId: ${variantId}, quantity: ${quantity}`);
+
+    if (!variantId || quantity <= 0) {
+        console.error('Error: ID de variante o cantidad inválida.');
+        return;
+    }
+
+    fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: variantId,
+            quantity: quantity,
+        }),
+    })
+        .then(response => {
+            console.log('Respuesta del API /cart/add.js:', response);
+            if (!response.ok) {
+                return response.json().then(error => {
+                    console.error('Error al agregar producto al carrito:', error);
+                    throw new Error(`Error ${response.status}: ${JSON.stringify(error)}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Producto agregado al carrito correctamente:', data);
+            updateCartDrawer(); // Abrir y actualizar el cart drawer
+        })
+        .catch(error => {
+            console.error('Error al agregar al carrito:', error.message);
+        });
+}
+
+// Función para cargar productos dinámicamente
+function loadProducts() {
+    console.log('Ejecutando loadProducts...');
+    const productList = document.getElementById('product-list');
+
+    if (!productList) {
+        console.error('Error: Elemento #product-list no encontrado.');
+        return;
+    }
+
+    fetch('/collections/{{ collection.handle }}/products.json')
+        .then(response => {
+            console.log('Respuesta del API /collections/...:', response);
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Productos cargados desde la API:', data);
+
+            const products = data.products;
+            productList.innerHTML = ''; // Limpiar la lista anterior
+
+            products.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+
+                const productImage = product.images.length > 0 ? product.images[0].src : 'default-image.jpg';
+                const variant = product.variants[0];
+
+                productItem.innerHTML = `
+                    <img src="${productImage}" alt="${product.title}" class="product-image" />
+                    <h3>${product.title}</h3>
+                    <p>${product.body_html}</p>
+                    <p><strong>Price:</strong> $${variant.price / 100} USD</p>
+                    <button class="add-to-cart" data-variant-id="${variant.id}">Add to Cart</button>
+                `;
+
+                productList.appendChild(productItem);
+            });
+
+            console.log('Productos renderizados correctamente en el DOM.');
+
+            // Asignar eventos a los botones "Add to Cart"
+            const buttons = document.querySelectorAll('.add-to-cart');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const variantId = this.getAttribute('data-variant-id');
+                    console.log(`Botón "Add to Cart" pulsado. Variant ID: ${variantId}`);
+                    addToCart(variantId, 1); // Cantidad fija de 1
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar productos:', error.message);
+        });
+}
+
+// Ejecutar la carga de productos al cargar la página
+document.addEventListener('DOMContentLoaded', loadProducts);
+
+
+</script>
+
+<style>
+  .call-to-action {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .call-to-action h1, .call-to-action h2 {
+    color: #333;
+  }
+  .call-to-action p {
+    color: #555;
+    font-size: 1rem;
+  }
+
+  #product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .product-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-item img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+
+  .product-item h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+  }
+
+
+</style>
+
+{% schema %}
+{
+  "name": "Call to Action",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Welcome to Our Seasonal Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "additional_info",
+      "label": "Additional Information",
+      "default": "Pre-order now to secure your favorite items before they sell out!"
+    }
+  ]
+}
+{% endschema %}
