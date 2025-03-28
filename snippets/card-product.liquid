@@ -197,6 +197,13 @@
             {%- endif -%}
 
             {% render 'price', product: card_product, price_class: '' %}
+
+            <div class="mi-componente">
+              <mi-boton 
+                  texto="{{ settings.texto }}"
+                  color="{{ settings.color }}"
+              ></mi-boton>
+          </div>
           </div>
         </div>
         {%- if show_quick_add -%}

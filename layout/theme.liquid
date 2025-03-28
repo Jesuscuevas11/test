@@ -295,6 +295,54 @@
         playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
       };
     </script>
+    <!-- En theme.liquid antes del </head> -->
+<script>
+  if (!customElements.get('mi-boton')) {
+    class MiBoton extends HTMLElement {
+      constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: 'open' });
+        
+        // Elementos del Shadow DOM
+        const style = document.createElement('style');
+        const button = document.createElement('button');
+        
+        // Configurar estilo inicial
+        style.textContent = `
+          button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+          }
+          button:hover { opacity: 0.9; }
+        `;
+        
+        shadow.appendChild(style);
+        shadow.appendChild(button);
+      }
+
+      connectedCallback() {
+        // Obtener atributos dinámicos
+        const shadow = this.shadowRoot;
+        const button = shadow.querySelector('button');
+        const color = this.getAttribute('color') || '#FF5722';
+        
+        // Aplicar estilos dinámicos
+        button.style.backgroundColor = color;
+        button.textContent = this.getAttribute('texto') || 'Botón';
+        
+        // Event listener
+        button.addEventListener('click', () => {
+          alert('¡Acción realizada!');
+        });
+      }
+    }
+
+    customElements.define('mi-boton', MiBoton);
+  }
+</script>
 
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>

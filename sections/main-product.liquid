@@ -81,6 +81,16 @@
               </p>
             {%- when 'title' -%}
               <div class="product__title" {{ block.shopify_attributes }}>
+                {% assign materiales_metaobject = product.metafields.custom.metafie %}
+
+                  {{ materiales_metaobject | metafield_tag: field: 'text', list_format: 'ordered' }}
+
+
+                  {% for type in shop.enabled_payment_types %}
+                    <img src="{{ type | payment_type_img_url }}" width="50" height="50" />
+                    {% endfor %}
+             
+             
                 <h1>{{ product.title | escape }}</h1>
                 <a href="{{ product.url }}" class="product__title">
                   <h2 class="h1">
@@ -88,6 +98,9 @@
                   </h2>
                 </a>
               </div>
+
+
+            
             {%- when 'price' -%}
               <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                 {%- render 'price',
@@ -571,6 +584,7 @@
   <script src="{{ 'selling-plans.js' | asset_url }}" defer="defer"></script>
   {% comment %}<script src="{{ 'selling-plan-docs.js' | asset_url }}" defer="defer"></script>{% endcomment %}
 </section>
+<model-viewer src="//polinas-potent-potions.myshopify.com/cdn/shop/3d/models/o/eb9388299ce0557c/WaterBottle.glb?v=0" camera-controls="true" style="--poster-color: transparent;" data-shopify-feature="1.12" alt="Potion bottle" poster="//polinas-potent-potions.myshopify.com/cdn/shop/products/WaterBottle_small.jpg?v=1655189057"></model-viewer>
 
 {% schema %}
 {

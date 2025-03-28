@@ -11,96 +11,134 @@
 
     <!-- Products List -->
     <div id="product-list"></div> <!-- Aquí se mostrarán los productos -->
-  </div>
+   
+</div>
 </section>
 
 
 
 <script>
+    
+    // Evitar registrar el componente múltiples veces
+    if (!customElements.get('mi-boton')) {
+        class MiBoton extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+                
+                // Estilos dinámicos (usando atributos)
+                const estilo = document.createElement('style');
+                estilo.textContent = `
+                    button {
+                        padding: 12px 24px;
+                        background: ${this.getAttribute('color')};
+                        border: none;
+                        border-radius: 6px;
+                        color: white;
+                        cursor: pointer;
+                    }
+                `;
+
+                const boton = document.createElement('button');
+                boton.textContent = this.getAttribute('texto');
+
+                // Evento de ejemplo
+                boton.addEventListener('click', () => {
+                    alert('Acción realizada!');
+                });
+
+                shadow.appendChild(estilo);
+                shadow.appendChild(boton);
+            }
+        }
+        customElements.define('mi-boton', MiBoton);
+    }
+
 
     
     function addToCart(variantId, quantity) {
         console.log(`Ejecutando addToCart con variantId: ${variantId}, quantity: ${quantity}`);
-    
+      
         if (!variantId || quantity <= 0) {
-            console.error('Error: ID de variante o cantidad inválida.');
-            return;
+          console.error('Error: ID de variante o cantidad inválida.');
+          return;
         }
-    
+      
         // Agregar producto al carrito
         fetch('/cart/add.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id: variantId,
-                quantity: quantity,
-            }),
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: quantity,
+          }),
         })
-            .then(response => {
-                console.log('Respuesta del API /cart/add.js:', response);
-                if (!response.ok) {
-                    return response.json().then(error => {
-                        console.error('Error al agregar producto al carrito:', error);
-                        throw new Error(`Error ${response.status}: ${JSON.stringify(error)}`);
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Producto agregado al carrito correctamente:', data);
-    
-                // Solicitar las secciones actualizadas, incluyendo los precios y los productos
-                return fetch('/cart?sections=cart-drawer,cart-icon-bubble,cart-items,cart-total-price');
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al obtener las secciones del carrito.');
-                }
-                return response.json();
-            })
-            .then(sections => {
-                console.log('Secciones actualizadas del carrito:', sections);
-    
-                // Actualizar el contenido del cart drawer
-                const cartDrawer = document.querySelector('cart-drawer');
-                if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
-                    cartDrawer.renderContents({ sections });
-                } else {
-                    console.warn('El elemento <cart-drawer> no se encontró o no tiene renderContents.');
-    
-                    // Actualizar manualmente el contenido del carrito
-                    const cartDrawerSection = document.querySelector('#shopify-section-cart-drawer');
-                    if (cartDrawerSection) {
-                        cartDrawerSection.innerHTML = sections['cart-drawer'];
-                    } else {
-                        console.error('No se encontró la sección #shopify-section-cart-drawer en el DOM.');
-                    }
-                }
-    
-                // Actualizar ícono del carrito
-                const cartIconBubble = document.querySelector('#cart-icon-bubble');
-                if (cartIconBubble) {
-                    cartIconBubble.innerHTML = sections['cart-icon-bubble'];
-                }
-    
-                // Actualizar productos y precios si hay secciones específicas para ellos
-                const cartItemsContainer = document.querySelector('#cart-items');
-                if (cartItemsContainer) {
-                    cartItemsContainer.innerHTML = sections['cart-items'];
-                }
-    
-                const cartTotalPriceContainer = document.querySelector('#cart-total-price');
-                if (cartTotalPriceContainer) {
-                    cartTotalPriceContainer.innerHTML = sections['cart-total-price'];
-                }
-    
-                // Verificar el estado del carrito (vacío o no vacío)
-                checkCartEmptyStatus();
-            })
-            .catch(error => {
-                console.error('Error al agregar al carrito:', error.message);
-            });
-    }
+          .then(response => {
+            console.log('Respuesta del API /cart/add.js:', response);
+            if (!response.ok) {
+              return response.json().then(error => {
+                console.error('Error al agregar producto al carrito:', error);
+                throw new Error(`Error ${response.status}: ${JSON.stringify(error)}`);
+              });
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Producto agregado al carrito correctamente:', data);
+      
+            // Solicitar las secciones actualizadas, incluyendo los productos y sus detalles
+            return fetch('/cart?sections=cart-drawer,cart-icon-bubble,cart-items,cart-total-price');
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error al obtener las secciones del carrito.');
+            }
+            return response.json();
+          })
+          .then(sections => {
+            console.log('Secciones actualizadas del carrito:', sections);
+      
+            // Actualizar el contenido del cart drawer
+            const cartDrawer = document.querySelector('cart-drawer');
+            if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
+              cartDrawer.renderContents({ sections });
+            } else {
+              console.warn('El elemento <cart-drawer> no se encontró o no tiene renderContents.');
+      
+              // Actualizar manualmente el contenido del carrito
+              const cartDrawerSection = document.querySelector('#shopify-section-cart-drawer');
+              if (cartDrawerSection) {
+                cartDrawerSection.innerHTML = sections['cart-drawer'];
+              } else {
+                console.error('No se encontró la sección #shopify-section-cart-drawer en el DOM.');
+              }
+            }
+      
+            // Actualizar ícono del carrito
+            const cartIconBubble = document.querySelector('#cart-icon-bubble');
+            if (cartIconBubble) {
+              cartIconBubble.innerHTML = sections['cart-icon-bubble'];
+            }
+      
+            // Actualizar productos y precios si hay secciones específicas para ellos
+            const cartItemsContainer = document.querySelector('#cart-items');
+            if (cartItemsContainer) {
+              cartItemsContainer.innerHTML = sections['cart-items'];
+            }
+      
+            const cartTotalPriceContainer = document.querySelector('#cart-total-price');
+            if (cartTotalPriceContainer) {
+              cartTotalPriceContainer.innerHTML = sections['cart-total-price'];
+            }
+      
+            // Verificar el estado del carrito (vacío o no vacío)
+            checkCartEmptyStatus();
+          })
+          .catch(error => {
+            console.error('Error al agregar al carrito:', error.message);
+          });
+      }
+      
     
     function checkCartEmptyStatus() {
         fetch('/cart.js')

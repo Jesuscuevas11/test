@@ -1,0 +1,70 @@
+<!-- HTML del componente -->
+<div class="mi-componente">
+    <mi-boton 
+        texto="{{ section.settings.boton_texto }}"
+        color="{{ section.settings.boton_color }}"
+    ></mi-boton>
+</div>
+
+<!-- Script del Web Component (solo se carga una vez) -->
+<script>
+    // Evitar registrar el componente múltiples veces
+    if (!customElements.get('mi-boton')) {
+        class MiBoton extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+                
+                // Estilos dinámicos (usando atributos)
+                const estilo = document.createElement('style');
+                estilo.textContent = `
+                    button {
+                        padding: 12px 24px;
+                        background: ${this.getAttribute('color')};
+                        border: none;
+                        border-radius: 6px;
+                        color: white;
+                        cursor: pointer;
+                    }
+                `;
+
+                const boton = document.createElement('button');
+                boton.textContent = this.getAttribute('texto');
+
+                // Evento de ejemplo
+                boton.addEventListener('click', () => {
+                    alert('Acción realizada!');
+                });
+
+                shadow.appendChild(estilo);
+                shadow.appendChild(boton);
+            }
+        }
+        customElements.define('mi-boton', MiBoton);
+    }
+</script>
+
+{% schema %}
+{
+    "name": "Botón Personalizado",
+    "settings": [
+        {
+            "type": "text",
+            "id": "boton_texto",
+            "label": "Texto del botón",
+            "default": "Comprar ahora"
+        },
+        {
+            "type": "color",
+            "id": "boton_color",
+            "label": "Color del botón",
+            "default": "#FF5722"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Botón Personalizado"
+        }
+    ]
+}
+{% endschema %}
