@@ -1,0 +1,38 @@
+{% if section.settings.show_greeting %}
+  <div class="greeting page-width">
+    {{ section.settings.greeting_text | default: "¡Bienvenido a nuestra tienda!" }}
+    <span>{{ section.settings.greeting_highlight | default: "¡Explora nuestros productos!" }}</span>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Greeting",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_greeting",
+      "label": "Mostrar saludo",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "greeting_text",
+      "label": "Texto principal",
+      "default": "¡Bienvenido a nuestra tienda!"
+    },
+    {
+      "type": "text",
+      "id": "greeting_highlight",
+      "label": "Texto destacado",
+      "default": "¡Explora nuestros productos!"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Greeting",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

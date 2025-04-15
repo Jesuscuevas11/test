@@ -1,0 +1,21 @@
+:root {
+  --color-principal: {{ settings.color_principal }};
+  --color-secundario: {{ settings.color_secundario }};
+}
+
+/* Ahora puedes usar las variables en tu CSS así:
+   ejemplo: color: var(--color-principal);
+   ejemplo: background-color: var(--color-secundario);
+*/
+
+.greeting {
+  color: var(--color-principal);
+  font-size: 2em;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.greeting span {
+  color: var(--color-secundario);
+}
+

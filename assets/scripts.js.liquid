@@ -1,0 +1,19 @@
+// Accediendo a las variables de configuración (settings)
+var colores = {
+    principal: '{{ settings.color_principal }}',
+    secundario: '{{ settings.color_secundario }}'
+};
+
+console.log('Colores del tema:', colores);
+
+// También podemos usar los colores para aplicar estilos
+document.addEventListener('DOMContentLoaded', function() {
+    var titulo = document.createElement('h1');
+    titulo.textContent = 'Probando colores del tema';
+    titulo.style.color = colores.principal;
+    titulo.style.backgroundColor = colores.secundario;
+    titulo.style.padding = '20px';
+    titulo.style.textAlign = 'center';
+    
+    document.body.insertBefore(titulo, document.body.firstChild);
+});

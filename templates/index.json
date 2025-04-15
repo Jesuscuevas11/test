@@ -1,5 +1,13 @@
 {
   "sections": {
+    "greeting": {
+      "type": "greeting",
+      "settings": {
+        "show_greeting": true,
+        "greeting_text": "¡Bienvenido a nuestra tienda!",
+        "greeting_highlight": "¡Explora nuestros productos!"
+      }
+    },
     "6a3bb789-ce10-45f5-ae67-e2063ef8c76b": {
       "type": "image-banner",
       "blocks": {
@@ -163,6 +171,7 @@
     }
   },
   "order": [
+    "greeting",
     "6a3bb789-ce10-45f5-ae67-e2063ef8c76b",
     "featured_collection",
     "custom-component",
