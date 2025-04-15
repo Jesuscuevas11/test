@@ -1,5 +1,16 @@
 {
-  "article": [],
+  "article": [
+    {
+      "key": "etiquetas_relacionadas",
+      "namespace": "custom",
+      "name": "Etiquetas relacionadas",
+      "description": "",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    }
+  ],
   "blog": [],
   "brand": [],
   "collection": [],
@@ -74,8 +85,8 @@
     {
       "key": "queries",
       "namespace": "shopify--discovery--product_search_boost",
-      "name": "Buscar impulsos de productos",
-      "description": "Lista de consultas de búsqueda que posicionan mejor un producto en los resultados",
+      "name": "Search product boosts",
+      "description": "List of search queries for which a product gets higher rank in search results",
       "type": {
         "name": "list.single_line_text_field",
         "category": "TEXT"
@@ -84,8 +95,8 @@
     {
       "key": "related_products",
       "namespace": "shopify--discovery--product_recommendation",
-      "name": "Productos relacionados",
-      "description": "Lista de productos relacionados",
+      "name": "Related products",
+      "description": "List of related products",
       "type": {
         "name": "list.product_reference",
         "category": "REFERENCE"
@@ -94,8 +105,8 @@
     {
       "key": "related_products_display",
       "namespace": "shopify--discovery--product_recommendation",
-      "name": "Configuración de productos relacionados",
-      "description": "Determina cómo se muestran los productos relacionados junto con las recomendaciones de productos algorítmicas.",
+      "name": "Related products settings",
+      "description": "Determines how related products are displayed along with algorithmic product recommendations",
       "type": {
         "name": "single_line_text_field",
         "category": "TEXT"
@@ -104,11 +115,41 @@
     {
       "key": "complementary_products",
       "namespace": "shopify--discovery--product_recommendation",
-      "name": "Productos complementarios",
-      "description": "Lista de productos complementarios",
+      "name": "Complementary products",
+      "description": "List of complementary products",
       "type": {
         "name": "list.product_reference",
         "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "rating",
+      "namespace": "reviews",
+      "name": "Product rating",
+      "description": "Average rating from customers",
+      "type": {
+        "name": "rating",
+        "category": "RATING"
+      }
+    },
+    {
+      "key": "rating_count",
+      "namespace": "reviews",
+      "name": "Product rating count",
+      "description": "Total number of ratings from customers",
+      "type": {
+        "name": "number_integer",
+        "category": "NUMBER"
+      }
+    },
+    {
+      "key": "avg_rating",
+      "namespace": "demo",
+      "name": "stars",
+      "description": "",
+      "type": {
+        "name": "number_integer",
+        "category": "NUMBER"
       }
     }
   ],
