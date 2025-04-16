@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page_title %}{{ page_title }} - {{ shop.name }} {% else %} {{ shop.name }} {% endif %}</title>
     
-    {{ content_for_header }}
+    {{ content_for_header | json }}
     {{ 'styles.css' | asset_url | stylesheet_tag }}
     
     {%- if settings.favicon != blank -%}
