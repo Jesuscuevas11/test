@@ -1,0 +1,14 @@
+{
+  "name": "Mi Layout Personalizado",
+  "layout": "mi-layout",
+  "sections": {
+    "main": {
+      "type": "pagina_producto",
+      "settings": {
+        "show_quantity": true,
+        "show_variant_labels": true
+      }
+    }
+  },
+  "order": ["main"]
+}
