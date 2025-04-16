@@ -1,0 +1,158 @@
+<div class="producto-container">
+  <div class="producto-grid">
+    <div class="producto-imagenes">
+      {% for image in product.images %}
+        <div class="producto-imagen">
+          <img src="{{ image | img_url: 'large' }}" 
+               alt="{{ image.alt | escape }}"
+               loading="lazy"
+               width="{{ image.width }}"
+               height="{{ image.height }}">
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="producto-info">
+      <h1>{{ product.title }}</h1>
+      
+      <div class="producto-precio">
+        <span class="precio-actual">{{ product.price | money }}</span>
+        {% if product.compare_at_price > product.price %}
+          <span class="precio-anterior">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+
+      <div class="producto-descripcion">
+        {{ product.description }}
+      </div>
+
+      {% form 'product', product %}
+        <select name="id" id="ProductSelect">
+          {% for variant in product.variants %}
+            <option value="{{ variant.id }}"
+              {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+              {{ variant.title }} - {{ variant.price | money }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <div class="cantidad">
+          <label for="Quantity">Cantidad</label>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1">
+        </div>
+
+        <button type="submit" name="add" class="agregar-carrito"
+          {% unless product.available %}disabled{% endunless %}>
+          {% if product.available %}
+            Agregar al carrito
+          {% else %}
+            Agotado
+          {% endif %}
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Página de Producto",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Mostrar selector de cantidad",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variant_labels",
+      "label": "Mostrar etiquetas de variantes",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Página de Producto"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.producto-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.producto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.producto-imagenes {
+  display: grid;
+  gap: 20px;
+}
+
+.producto-imagen img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.producto-info {
+  padding: 20px;
+}
+
+.producto-precio {
+  margin: 20px 0;
+  font-size: 1.5em;
+}
+
+.precio-anterior {
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 10px;
+}
+
+.cantidad {
+  margin: 20px 0;
+}
+
+.agregar-carrito {
+  background-color: {{ settings.color_principal }};
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+.agregar-carrito:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .producto-grid {
+    grid-template-columns: 1fr;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Manejo de cantidad
+  const quantityInput = document.getElementById('Quantity');
+  if (quantityInput) {
+    quantityInput.addEventListener('change', function() {
+      if (this.value < 1) this.value = 1;
+    });
+  }
+});
+{% endjavascript %}

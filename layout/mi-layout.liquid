@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page_title %}{{ page_title }} - {{ shop.name }} {% else %} {{ shop.name }} {% endif %}</title>
+    
+    {{ content_for_header }}
+    {{ 'styles.css' | asset_url | stylesheet_tag }}
+    
+    {%- if settings.favicon != blank -%}
+        <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+    
+    <style>
+        body {
+          font-family: sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+        header {
+          background-color: #333;
+          color: white;
+          padding: 1em;
+          text-align: center;
+        }
+        nav a {
+          color: white;
+          padding: 0.5em 1em;
+          text-decoration: none;
+        }
+        main {
+          padding: 20px;
+          background-color: white;
+          margin: 20px;
+          border-radius: 5px;
+        }
+        footer {
+          background-color: #333;
+          color: white;
+          text-align: center;
+          padding: 1em;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+        }
+        .producto {
+          border: 1px solid #ccc;
+          padding: 15px;
+          margin-bottom: 15px;
+          border-radius: 5px;
+        }
+        .precio {
+          color: green;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <header>
+        <div class="logo">Mi Tienda Online</div>
+        <nav>
+          <a href="/">Inicio</a>
+          <a href="/productos">Productos</a>
+          <a href="/contacto">Contacto</a>
+        </nav>
+      </header>
+    
+      <main>
+        {{ content_for_layout }}
+      </main>
+    
+      <footer>
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.</p>
+      </footer>
+    
+      {{ 'scripts.js' | asset_url | script_tag }}
+    </body>
+</html>
