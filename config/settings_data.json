@@ -9,8 +9,6 @@
  */
 {
   "current": {
-    "color_principal": "#121212",
-    "color_secundario": "#45c0b6",
     "logo_width": 50,
     "colors_solid_button_labels": "#ffffff",
     "colors_accent_1": "#121212",
@@ -137,6 +135,8 @@
     "show_vendor": false,
     "show_cart_note": false,
     "cart_drawer_collection": "hydrogen",
+    "color_principal": "#121212",
+    "color_secundario": "#45c0b6",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
