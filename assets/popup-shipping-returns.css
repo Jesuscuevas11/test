@@ -1,0 +1,145 @@
+.popup-container{
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgb(160, 154, 154);
+  border-top: 1px solid rgb(160, 154, 154);
+}
+.popup-container a{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #242222;
+}
+.popup-container a .svg-wrapper{
+  margin-right: 1rem;
+  width: 25px;
+  height: 25px;
+}
+.shipping-returns-container {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 3rem;
+    font-weight: 600;
+    cursor: pointer;
+    }
+    .popup-close:hover {
+    color: #999;
+    }
+
+.shipping-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  color: #000;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.shipping-method {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eaeaea;
+  text-align: left;
+  padding: 0 4rem;
+}
+
+.method-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.method-details {
+ font-size: 1.5rem;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.method-details li {
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.method-details li::before {
+  content: "•";
+  position: absolute;
+  left: -15px;
+  color: #555;
+}
+
+.method-details em {
+  font-style: italic;
+  color: #666;
+  font-size: .9em;
+}
+
+.returns-section {
+  margin-top: 30px;
+  text-align: left;
+    padding: 0 4rem;
+}
+
+.returns-title {
+  font-size: 1.8rem;
+ 
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.returns-policy {
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .shipping-returns-container {
+    padding: 20px;
+  }
+  
+  .shipping-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-inner{
+    width: 100%;
+  }
+  .shipping-method {
+    padding: 0 1rem;
+  }
+  .shipping-title {
+    font-size: 20px;
+  }
+  
+  .method-title,
+  .returns-title {
+    font-size: 16px;
+  }
+}

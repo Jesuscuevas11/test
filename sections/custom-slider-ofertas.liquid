@@ -1,0 +1,101 @@
+{{ 'custom-slider-ofertas.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-slider-ofertas page-width" id="slider-ofertas">
+  {% for block in section.blocks %}
+    {% assign index = forloop.index0 %}
+
+    <div class="custom-banner">
+      <div class="banner-image">
+        {% if block.settings.slide_image != blank %}
+          {% assign mobile_width = 450 | times: 1 %}
+          {% assign tablet_width = 768 | times: 1 %}
+          {% assign desktop_width = 1200 | times: 1 %}
+
+          <img
+            srcset="
+              {{ block.settings.slide_image | image_url: width: mobile_width }} 450w,
+              {{ block.settings.slide_image | image_url: width: tablet_width }} 768w,
+              {{ block.settings.slide_image | image_url: width: desktop_width }} 1200w
+            "
+            sizes="(max-width: 480px) 450px, (max-width: 767px) 768px, 1200px"
+            src="{{ block.settings.slide_image | image_url: width: 1200 }}"
+            alt="{{ block.settings.slide_image.alt | escape }}"
+            loading="lazy"
+            class="banner-img"
+            width="{{ desktop_width }}"
+            height="{{ desktop_width | divided_by: block.settings.slide_image.aspect_ratio | round }}"
+          >
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+      <div class="banner-content" data-index="{{ index }}">
+        <h2 class="banner-title">{{ block.settings.slide_title }}</h2>
+        <p class="banner-description">{{ block.settings.promocion }}</p>
+        <a href="{{ block.settings.link_url }}" class="banner-button">{{ block.settings.link_text }}</a>
+      </div>
+    </div>
+  {% endfor %}
+
+  {% comment %} Botones de navegación - Fuera del loop {% endcomment %}
+  <div class="button-container">
+    <button class="prev-btn">
+      <span class="svg-wrapper">{{ 'icon-chevron-left.svg' | inline_asset_content }}</span>
+    </button>
+    <button class="next-btn">
+      <span class="svg-wrapper">{{ 'icon-chevron-right.svg' | inline_asset_content }}</span>
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Slider - Banner",
+  "tag": "section",
+  "class": "slider-ofertas",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Slideshow"
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "name": "Slide",
+      "type": "slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_title",
+          "label": "Titulo Slide"
+        },
+        {
+          "type": "text",
+          "id": "promocion",
+          "label": "Texto Promocion"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Seleciona Imagen"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<script src="{{ 'custom-slider-ofertas.js' | asset_url }}" defer></script>

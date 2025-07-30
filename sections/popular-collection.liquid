@@ -1,0 +1,34 @@
+{{ 'section-popular-collection.css' | asset_url | stylesheet_tag }}
+{% if section.settings.collection_id %}
+  <h2 class="collection-title page-width">{{ section.settings.title }}</h2>
+  <div class="popular-collection page-width">
+    {% assign collection = collections[section.settings.collection_id] %}
+    {% for product in collection.products %}
+      <div class="product-card">
+        <a href="{{ product.url }}">
+          <img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" alt="{{ product.title }}">
+          <h3 class="product-title">{{ product.title }}</h3>
+          <p class="product-price ">{{ product.price | money_with_currency }}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Popular Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nombre de la Coleccion"
+    },
+    {
+      "type": "collection",
+      "id": "collection_id",
+      "label": "Coleccion Popular"
+    }
+  ]
+}
+{% endschema %}

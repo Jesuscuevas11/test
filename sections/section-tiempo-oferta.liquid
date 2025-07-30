@@ -1,0 +1,39 @@
+{{ 'section-tiempo-oferta.css' | asset_url | stylesheet_tag }}
+<div class="countdown-offer">
+  <h2 class="offer-title">{{ section.settings.offer_title }}</h2>
+  <div class="countdown-timer">
+    <div class="countdown-segment">
+      <span class="countdown-number days">00</span>
+      <span class="countdown-label">Días</span>
+    </div>
+    <div class="countdown-segment">
+      <span class="countdown-number hours">00</span>
+      <span class="countdown-label">Horas</span>
+    </div>
+    <div class="countdown-segment">
+      <span class="countdown-number minutes">00</span>
+      <span class="countdown-label">Minutos</span>
+    </div>
+    <div class="countdown-segment">
+      <span class="countdown-number seconds">00</span>
+      <span class="countdown-label">Segundos</span>
+    </div>
+  </div>
+  <a href="/collections/all" class="offer-button">Oferta Valida por 3 días</a>
+</div>
+
+{% schema %}
+{
+  "name": "Oferta Especial x Tiempo",
+  "settings": [
+    {
+      "type": "text",
+      "id": "offer_title",
+      "label": "Título de la oferta",
+      "default": "¡Oferta Especial por Tiempo Limitado!"
+    }
+  ]
+}
+{% endschema %}
+
+<script src="{{ 'section-tiempo-oferta.js' | asset_url }}" defer></script>

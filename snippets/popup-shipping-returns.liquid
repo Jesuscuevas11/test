@@ -1,0 +1,32 @@
+{{ 'popup-shipping-returns.css' | asset_url | stylesheet_tag }}
+
+<div class="shipping-returns-container" id="popup-shipping">
+  <div class="popup-inner">
+    <div class="popup-close" onclick="closePopup()">X</div>
+    <h2 class="shipping-title">DELIVERY & RETURNS</h2>
+
+    <div class="shipping-method">
+      <h3 class="method-title">Standard Shipping - $5 USD</h3>
+      <ul class="method-details">
+        <li>Estimated Delivery 4-7 working days. <em>*Once your order has shipped.</em></li>
+        <li>Free Standard Delivery on orders $75</li>
+      </ul>
+    </div>
+
+    <div class="shipping-method">
+      <h3 class="method-title">Express Shipping - $15 USD</h3>
+      <ul class="method-details">
+        <li>Estimated delivery 3 working days. <em>*Once your order has shipped.</em></li>
+      </ul>
+    </div>
+
+    <div class="returns-section">
+      <h3 class="returns-title">Returns</h3>
+      <p class="returns-policy">
+        Free 30-Day Return Policy, excluding final sale items, underwear, bottles, and swimwear.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'popup-shipping-returns.js' | asset_url }}" defer></script>

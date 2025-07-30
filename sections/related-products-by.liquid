@@ -1,0 +1,84 @@
+{{ 'section-popular-collection.css' | asset_url | stylesheet_tag }}
+
+{%- assign current_product = product -%}
+{%- assign show_collection = false -%}
+
+{%- if section.settings.collection_id -%}
+  {%- assign target_collection = collections[section.settings.collection_id] -%}
+
+  {%- comment %} Verificar si el producto actual pertenece a la colección y comparte etiquetas {%- endcomment %}
+  {%- if current_product.collections contains target_collection -%}
+    {%- assign show_collection = true -%}
+
+    {%- comment %} Opcional: Verificar también etiquetas en común {%- endcomment %}
+    {%- if section.settings.required_tag != blank -%}
+      {%- unless current_product.tags contains section.settings.required_tag -%}
+        {%- assign show_collection = false -%}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if show_collection -%}
+    <h2 class="collection-title page-width">{{ section.settings.title }}</h2>
+    <div class="popular-collection page-width">
+      {%- for product in target_collection.products limit: section.settings.product_limit -%}
+        {%- unless product.handle == current_product.handle -%}
+          <div class="product-card">
+            <a href="{{ product.url }}">
+              <img
+                src="{{ product.featured_image | image_url: width: 300, height: 300, crop: 'center' }}"
+                alt="{{ product.title }}"
+                loading="lazy"
+              >
+              <h3 class="product-title">{{ product.title }}</h3>
+              <p class="product-price">{{ product.price | money_with_currency }}</p>
+              {%- if product.compare_at_price > product.price -%}
+                <p class="product-compare-price">{{ product.compare_at_price | money_with_currency }}</p>
+              {%- endif -%}
+            </a>
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Productos Relacionados",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título de la sección",
+      "default": "Productos Relacionados"
+    },
+    {
+      "type": "collection",
+      "id": "collection_id",
+      "label": "Colección de productos relacionados"
+    },
+    {
+      "type": "text",
+      "id": "required_tag",
+      "label": "Etiqueta requerida (opcional)",
+      "info": "Solo muestra la colección si el producto tiene esta etiqueta"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Límite de productos",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Productos Relacionados",
+      "category": "Colecciones"
+    }
+  ]
+}
+{% endschema %}
