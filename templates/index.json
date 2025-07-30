@@ -1,18 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "slider-banner-ofertas":{
-      "type": "custom-slider-ofertas"
+    "slider-banner-ofertas": {
+      "type": "custom-slider-ofertas",
+      "blocks": {
+        "slide_gNQpma": {
+          "type": "slide",
+          "settings": {
+            "slide_title": "This is  a test",
+            "promocion": "test",
+            "link_text": "testtestastest",
+            "link_url": "shopify://policies/privacy-policy",
+            "slide_image": "shopify://shop_images/theme_cover_image.jpg"
+          }
+        },
+        "slide_Gqwhid": {
+          "type": "slide",
+          "settings": {
+            "slide_title": "test",
+            "promocion": "testdtete",
+            "link_text": "tetetetetetete",
+            "link_url": "",
+            "slide_image": "shopify://shop_images/WhatsAppImage2025-03-18at4.54.36PM.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "slide_gNQpma",
+        "slide_Gqwhid"
+      ],
+      "settings": {
+        "title": ""
+      }
     },
-    "popular-collection":{
-      "type": "popular-collection"
+    "popular-collection": {
+      "type": "popular-collection",
+      "settings": {
+        "title": "",
+        "collection_id": ""
+      }
     },
-    "oferta-especial":{
-      "type": "section-tiempo-oferta"
-    },
-  },  
+    "oferta-especial": {
+      "type": "section-tiempo-oferta",
+      "settings": {
+        "offer_title": "¡Oferta Especial por Tiempo Limitado!"
+      }
+    }
+  },
   "order": [
     "slider-banner-ofertas",
     "popular-collection",
-    "oferta-especial",
+    "oferta-especial"
   ]
-}   
+}
