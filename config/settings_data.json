@@ -140,6 +140,11 @@
         "type": "shopify://apps/shoppinggives/blocks/app-embed-block/7b6c2cd4-8962-4dc6-975b-870e1f567789",
         "disabled": false,
         "settings": {}
+      },
+      "15472879455061085326": {
+        "type": "shopify://apps/avada-order-limits/blocks/app-embed/d3021427-4f7b-49c8-8963-29d1d52b8956",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
